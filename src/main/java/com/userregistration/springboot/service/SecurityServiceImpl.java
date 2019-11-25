@@ -1,7 +1,7 @@
 package com.userregistration.springboot.service;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import javax.servlet.http.HttpSession;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -17,30 +17,26 @@ public class SecurityServiceImpl implements SecurityService{
 	
 	@Autowired
 	AuthenticationManager authenticationManager ;
-	
-	private static final Logger logger = LoggerFactory.getLogger(SecurityServiceImpl.class);
 
 	@Override
-	public UsernamePasswordAuthenticationToken login(String username, String password) {
+	public UsernamePasswordAuthenticationToken login(String username, String password,HttpSession session) {
 		UserDetails userDetails = userDetailsService.loadUserByUsername(username);
-		/*
-		 * UsernamePasswordAuthenticationToken usernamePasswordAuthenticationToken = new
-		 * UsernamePasswordAuthenticationToken(userDetails, password,
-		 * userDetails.getAuthorities());
-		 */
-        
+		
         UsernamePasswordAuthenticationToken usernamePasswordAuthenticationToken 
-        = new UsernamePasswordAuthenticationToken(username, password);
+        = new UsernamePasswordAuthenticationToken(userDetails, password,userDetails.getAuthorities());
 
-        authenticationManager.authenticate(usernamePasswordAuthenticationToken);
+        //authenticationManager.authenticate(usernamePasswordAuthenticationToken);
 
         if (usernamePasswordAuthenticationToken.isAuthenticated()) {
             SecurityContextHolder.getContext().setAuthentication(usernamePasswordAuthenticationToken);
-            logger.debug(String.format("Auto login %s successfully!", username));
+            session.setAttribute("username", userDetails.getUsername());
             return usernamePasswordAuthenticationToken;
         }
+        
         //check for invalid input result
 		return null;
 	}
+	
+	
 
 }

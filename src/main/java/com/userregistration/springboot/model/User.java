@@ -9,8 +9,11 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
 import javax.persistence.Transient;
+import javax.validation.constraints.NotEmpty;
 
 import org.hibernate.annotations.CreationTimestamp;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 @Entity
 @Table(name = "user")
@@ -20,9 +23,11 @@ public class User {
     private Long id;
 
     @Column(name = "username",unique = true)
+    @NotEmpty(message = "Please provide a user name")
     private String username;
 
     @Column(name = "password")
+    @NotEmpty(message = "Please provide a password")
     private String password;
     
     @Column(name = "emailId")
@@ -33,10 +38,9 @@ public class User {
 
     @CreationTimestamp
     private Date updatedAt;
-    
-    
 
     @Transient
+    @JsonIgnore   
     private String passwordConfirm;
 
     public Long getId() {
