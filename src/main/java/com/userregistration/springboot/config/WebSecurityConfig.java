@@ -34,16 +34,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     }
 
 	@Override
-	protected void configure(HttpSecurity http) throws Exception {//check again
-		
-		 /* http.httpBasic()
-		  		. realmName("user-reg-app")
-		  		. and()
-		  		. sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
-		  		. and()
-		  		. csrf().disable()
-		  		. authorizeRequests().antMatchers("/**").permitAll().anyRequest().authenticated();*/
-		
+	protected void configure(HttpSecurity http) throws Exception {
 		http
         //HTTP Basic authentication
         .httpBasic()
